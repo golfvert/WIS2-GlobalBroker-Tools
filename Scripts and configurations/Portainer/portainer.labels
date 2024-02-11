@@ -1,0 +1,7 @@
+traefik.enable=true
+traefik.http.routers.portainer.entrypoints=websecure
+traefik.http.routers.portainer.rule=Host(`portainergb.mydomain.org`)
+traefik.http.routers.portainer.middlewares=security@file
+traefik.http.routers.portainer.tls=true
+traefik.http.services.portainer.loadbalancer.server.port=9000
+traefik.http.services.portainer.loadbalancer.server.scheme=http

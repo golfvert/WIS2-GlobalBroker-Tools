@@ -1,0 +1,26 @@
+services:
+  traefik:
+    image: traefik:2.8
+    container_name: traefik
+    extra_hosts:
+      - host.docker.internal:172.17.0.1
+    networks:
+      - traefik
+    restart: unless-stopped
+    ports:
+      - 443:443
+      - 8883:8883
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /home/inmet/traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+      - /home/inmet/traefik/dynamic:/etc/traefik/dynamic:ro
+      - /home/inmet/traefik/ssl:/etc/traefik/ssl:ro
+    labels:
+      traefik.enable: true
+      traefik.http.routers.traefik.entrypoints: websecure
+      traefik.http.routers.traefik.rule: Host(`192.168.242.110`)
+      traefik.http.routers.traefik.tls: true
+      traefik.http.routers.traefik.service: api@internal
+networks:
+  traefik:
+    external: true

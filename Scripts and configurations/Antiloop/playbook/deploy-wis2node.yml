@@ -1,0 +1,94 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  tasks:
+  - name: Select which antiloop hosts
+    add_host:
+      name: "{{ item }}"
+      groups: select
+    loop:  "{{ (groups['antiloop'] | shuffle)[0:2] }}"
+
+- hosts: antiloop
+  become: yes
+  become_method: sudo
+  tasks:
+  - name: Check directory exists
+    stat:
+      path: /home/gb/compose/{{ wis2node }}
+    register: dir_to_delete
+
+  - name: Remove old container
+    vars:
+      ansible_python_interpreter: /opt/anaconda3/bin/python
+    community.docker.docker_compose:
+      project_src: /home/gb/compose/{{ wis2node }}
+      state: absent
+    when: dir_to_delete.stat.exists and dir_to_delete.stat.isdir
+
+  - name: Purge if exists
+    file:
+      state: absent
+      path: /home/gb/compose/{{ wis2node }}
+    when: dir_to_delete.stat.exists and dir_to_delete.stat.isdir
+
+- hosts: select
+  become: yes
+  become_method: sudo
+  gather_facts: false
+  tasks:
+  - name: Add traefik config
+    ansible.builtin.copy:
+      src: /home/ansadm/data/wis2node/{{ wis2node }}/{{ wis2node }}_waloop.yml
+      dest: /home/gb/traefik/dynamic/{{ wis2node }}.yml
+      owner: gb
+      group: docker
+      mode: '0644'
+      backup: yes
+
+  - name: Create directory
+    file:
+      path: /home/gb/compose/{{ wis2node }}
+      owner: gb
+      group: docker
+      mode: '0755'
+      state: directory
+
+
+  - name: Copy host env file
+    ansible.builtin.copy:
+      src: /home/ansadm/data/globalenv/{{ inventory_hostname_short }}.env
+      dest: /home/gb/compose/{{ wis2node }}/host.env
+      owner: gb
+      group: docker
+      mode: '0644'
+      backup: no
+
+  - name: Copy required files
+    ansible.builtin.copy:
+      src: /home/ansadm/data/wis2node/{{ wis2node }}/compose/
+      dest: /home/gb/compose/{{ wis2node }}
+      owner: gb
+      group: docker
+      mode: '0644'
+      backup: no
+
+  - name: Deploy new container
+    vars:
+      ansible_python_interpreter: /opt/anaconda3/bin/python
+    community.docker.docker_compose:
+      project_src: /home/gb/compose/{{ wis2node }}
+      state: present
+
+- hosts: manage
+  become: yes
+  become_method: sudo
+  tasks:
+  - name: Update prometheus config
+    ansible.builtin.copy:
+      src: /home/ansadm/data/mqtt.json
+      dest: /home/gb/prometheus/mqtt.json
+      owner: gb
+      group: docker
+      mode: '0644'
+      backup: yes

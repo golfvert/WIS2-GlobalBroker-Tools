@@ -1,0 +1,17 @@
+services:
+  redis:
+    container_name: redis
+    image: redis:7.2.4-alpine3.19
+    extra_hosts:
+      - wbroker01:192.168.0.1
+      - wbroker02:192.168.0.2
+      - wbroker03:192.168.0.3
+      - waloop01:192.168.0.4
+      - waloop02:192.168.0.5
+      - waloop03:192.168.0.6
+    command: redis-server /data/redis.conf --save 20 1
+    network_mode: host
+    volumes:
+      - /home/gb/redis:/data
+    restart: unless-stopped
+    user: 1000:1000

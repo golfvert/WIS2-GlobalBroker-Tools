@@ -1,0 +1,12 @@
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+127.0.0.1 wmanage.localdomain wmanage localhost
+127.0.0.1 container345575
+
+192.168.0.110 wbroker01 wbroker01.teganet.eu
+192.168.0.111 wbroker02 wbroker02.teganet.eu
+192.168.0.112 wbroker03 wbroker03.teganet.eu
+192.168.0.113 waloop01 waloop01.teganet.eu
+192.168.0.114 waloop02 waloop02.teganet.eu
+192.168.0.116 waloop03 waloop03.teganet.eu
+192.168.0.117 wmanage wmanage.teganet.eu

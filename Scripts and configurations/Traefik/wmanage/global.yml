@@ -1,0 +1,130 @@
+tls:
+  options:
+    default:
+      minVersion: VersionTLS12
+      sniStrict: false
+      cipherSuites:
+        - TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
+        - TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+        - TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305
+        - TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256
+        - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        - TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305
+        - TLS_AES_128_GCM_SHA256
+        - TLS_AES_256_GCM_SHA384
+        - TLS_CHACHA20_POLY1305_SHA256
+      curvePreferences:
+        - CurveP521
+        - CurveP384
+      alpnProtocols:
+        - h2
+        - http/1.1
+    mintls13:
+      minVersion: VersionTLS13
+
+http:
+  middlewares:
+    compression:
+      compress:
+        excludedContentTypes:
+          - text/event-stream
+
+    auth:
+      basicAuth:
+        users:
+          - "inmetmon:$apr1$0l8dTU8R$6g8wU/h1AnbwHbsiVDhcn0"
+
+    authfederation:
+      basicAuth:
+        users:
+          - "inmetmon:$apr1$0l8dTU8R$6g8wU/h1AnbwHbsiVDhcn0"
+          - "globalmonitor:$apr1$pqnkxf23$3KBHDKFz.JUzY07yNaOrD/"
+
+
+    security:
+      headers:
+        accessControlAllowMethods:
+          - GET
+          - OPTIONS
+          - PUT
+        accessControlMaxAge: 100
+        addVaryHeader: true
+        browserXssFilter: true
+        contentTypeNosniff: true
+        forceSTSHeader: true
+        frameDeny: true
+        stsPreload: true
+        customFrameOptionsValue: SAMEORIGIN
+        referrerPolicy: "origin-when-cross-origin"
+        permissionsPolicy: "camera 'none'; microphone 'none'; geolocation 'none'; payment 'none';"
+        stsSeconds: 315360000
+        hostsProxyHeaders:
+
+  routers:
+    wbroker01:
+      rule: (PathPrefix(`/wbroker01`) && ClientIP(`137.129.0.0/16`,`172.20.0.0/24`,`192.168.0.0/16`)
+      service: wbroker01-srv
+      entryPoints:
+        - web
+
+    wbroker02:
+      rule: (PathPrefix(`/wbroker02`) && ClientIP(`137.129.0.0/16`,`172.20.0.0/24`,`192.168.0.0/16`)
+      service: wbroker02-srv
+      entryPoints:
+        - web
+
+    wbroker03:
+      rule: (PathPrefix(`/wbroker03`) && ClientIP(`137.129.0.0/16`,`172.20.0.0/24`,`192.168.0.0/16`)
+      service: wbroker03-srv
+      entryPoints:
+        - web
+
+    waloop01:
+      rule: (PathPrefix(`/waloop01`) && ClientIP(`137.129.0.0/16`,`172.20.0.0/24`,`192.168.0.0/16`)
+      service: waloop01-srv
+      entryPoints:
+        - web
+
+    waloop02:
+      rule: (PathPrefix(`/waloop02`) && ClientIP(`137.129.0.0/16`,`172.20.0.0/24`,`192.168.0.0/16`)
+      service: waloop02-srv
+      entryPoints:
+        - websecure
+      tls: {}
+
+    waloop03:
+      rule: (PathPrefix(`/waloop03`) && ClientIP(`137.129.0.0/16`,`172.20.0.0/24`,`192.168.0.0/16`)
+      service: waloop03-srv
+      entryPoints:
+        - web
+
+  services:
+    waloop01-srv:
+      loadBalancer:
+        servers:
+          - url: "http://waloop01/waloop01"
+
+    waloop02-srv:
+      loadBalancer:
+        servers:
+          - url: "http://waloop02/waloop02"
+
+    waloop03-srv:
+      loadBalancer:
+        servers:
+          - url: "http://waloop03/waloop03"
+
+    wbroker01-srv:
+      loadBalancer:
+        servers:
+                - url: "http://192.168.242.110/wbroker01"
+
+    wbroker02-srv:
+      loadBalancer:
+        servers:
+                - url: "http://192.168.242.111/wbroker02"
+
+    wbroker03-srv:
+      loadBalancer:
+        servers:
+                - url: "http://192.168.242.112/wbroker03"

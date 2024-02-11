@@ -1,0 +1,29 @@
+http:
+  routers:
+    broker:
+      rule: ( Host(`globalbroker.inmet.gov.br`) && Path(`/mqtt`) )
+      service: broker-srv
+      entryPoints:
+        - websecure
+      tls: {}
+
+  services:
+    broker-srv:
+      loadBalancer:
+        servers:
+          - url: "http://host.docker.internal:8083"
+
+tcp:
+  routers:
+    mqtt:
+      rule: HostSNI(`globalbroker.inmet.gov.br`,`wbroker01`)
+      service: mqtt-srv
+      entryPoints:
+        - mqtts
+      tls: {}
+
+  services:
+    mqtt-srv:
+      loadBalancer:
+        servers:
+          - address: "host.docker.internal:1883"

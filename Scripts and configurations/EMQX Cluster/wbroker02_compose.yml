@@ -1,0 +1,30 @@
+services:
+  emqx:
+    image: emqx:5.5.0
+    container_name: emqx
+    extra_hosts:
+      - wbroker01:192.168.0.1
+      - wbroker02:192.168.0.2
+      - wbroker03:192.168.0.3
+      - waloop01:192.168.0.4
+      - waloop02:192.168.0.5
+      - waloop03:192.168.0.6
+    environment:
+    - "EMQX_NODE_NAME=emqx@wbroker02"
+    - "EMQX_CLUSTER__DISCOVERY_STRATEGY=static"
+    - "EMQX_CLUSTER__STATIC__SEEDS=[emqx@wbroker01,emqx@wbroker03]"
+    healthcheck:
+      test: ["CMD", "/opt/emqx/bin/emqx_ctl", "status"]
+      interval: 5s
+      timeout: 25s
+      retries: 5
+    network_mode: bridge
+    restart: always
+    ports:
+      - 1883:1883
+      - 8083:8083
+      - 18083:18083 
+      - 4370:4370
+      - 5369:5369
+    volumes:
+      - /home/gb/emqx:/opt/emqx/data

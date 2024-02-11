@@ -1,0 +1,12 @@
+[broker]
+wbroker01
+wbroker02
+wbroker03
+
+[antiloop]
+waloop01
+waloop02
+waloop03
+
+[manage]
+localhost ansible_connection=local
