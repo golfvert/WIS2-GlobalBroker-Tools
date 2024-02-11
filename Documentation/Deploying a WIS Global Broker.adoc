@@ -141,11 +141,11 @@ waloop03
 localhost ansible_connection=local
 ```
 
-It creates three groups named `broker`, `antiloop`and `manage`. Then, using ansible, it will be possible to use those three group names to run the same command on all wbroker0x, waloop0x or on wmanage itself.
+It creates three groups named `broker`, `antiloop` and `manage`. Then, using ansible, it will be possible to use those three group names to run the same command on all wbroker0x, waloop0x or on wmanage itself.
 
 For this to work, the names wbroker01, 02, 03, waloop01, 02, 03 must resolve to the IP addresses of the various hosts. This can be done using DNS or `/etc/hosts` file on wmanage.
 
-To check that it is working as expected, and as user ansadm run ansible broker -a uptime`. This should run the `uptime` command on all wbroker0x hosts. 
+To check that it is working as expected, and as user ansadm run `ansible broker -a uptime`. This should run the `uptime` command on all wbroker0x hosts. 
 If successful, the result should be something like:
 
 ```
@@ -158,7 +158,7 @@ wbroker03 | CHANGED | rc=0 >>
 ```
 
 You can also check on `antiloop` and `manage`. 
-When everything is properly configured, it means that ansible is ready.
+When everything is working as expected, it means that ansible is ready.
 
 === Redis
 
