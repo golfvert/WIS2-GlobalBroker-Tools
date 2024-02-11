@@ -3,7 +3,12 @@ services:
     image: traefik:2.8
     container_name: traefik
     extra_hosts:
-      - host.docker.internal:172.17.0.1
+      - wbroker01:192.168.0.1
+      - wbroker02:192.168.0.2
+      - wbroker03:192.168.0.3
+      - waloop01:192.168.0.4
+      - waloop02:192.168.0.5
+      - waloop03:192.168.0.6
     networks:
       - traefik
     restart: unless-stopped
@@ -12,13 +17,13 @@ services:
       - 8883:8883
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /home/inmet/traefik/traefik.yml:/etc/traefik/traefik.yml:ro
-      - /home/inmet/traefik/dynamic:/etc/traefik/dynamic:ro
-      - /home/inmet/traefik/ssl:/etc/traefik/ssl:ro
+      - /home/gb/traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+      - /home/gb/traefik/dynamic:/etc/traefik/dynamic:ro
+      - /home/gb/traefik/ssl:/etc/traefik/ssl:ro
     labels:
       traefik.enable: true
       traefik.http.routers.traefik.entrypoints: websecure
-      traefik.http.routers.traefik.rule: Host(`192.168.242.111`)
+      traefik.http.routers.traefik.rule: Host(`wbroker02`)
       traefik.http.routers.traefik.tls: true
       traefik.http.routers.traefik.service: api@internal
 networks:

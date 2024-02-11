@@ -31,7 +31,7 @@ http:
     auth:
       basicAuth:
         users:
-          - "inmetmon:$apr1$0l8dTU8R$6g8wU/h1AnbwHbsiVDhcn0"
+          - "wis2gb:$apr1$0l8dTU8R$6g8wU/h1AnbwHbsiVDhcn0"
 
     security:
       headers:

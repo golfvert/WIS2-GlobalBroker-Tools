@@ -18,13 +18,7 @@ services:
       interval: 5s
       timeout: 25s
       retries: 5
-    network_mode: bridge
+    network_mode: host
     restart: always
-    ports:
-      - 1883:1883
-      - 8083:8083
-      - 18083:18083 
-      - 4370:4370
-      - 5369:5369
     volumes:
       - /home/gb/emqx:/opt/emqx/data

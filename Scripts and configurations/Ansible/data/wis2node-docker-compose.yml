@@ -1,0 +1,23 @@
+version: '3.8'
+services:
+    wis2node:
+      container_name: wis2node
+      image: golfvert/wis2gb:2.0.3
+      env_file:
+        - wis2node.env
+        - redis.env
+        - globalbroker.env
+        - host.env
+      labels:
+        - traefik.enable=true
+        - traefik.http.routers.wis2node.entrypoints=web
+        - traefik.http.routers.wis2node.rule=PathPrefix(`/groland/`)
+        - traefik.http.services.wis2node.loadbalancer.server.port=1880
+        - traefik.http.services.wis2node.loadbalancer.server.scheme=http
+        - traefik.http.routers.wis2node.middlewares=stripgroland@file
+      networks:
+        - traefik
+      restart: unless-stopped
+networks:
+    traefik:
+      external: true
