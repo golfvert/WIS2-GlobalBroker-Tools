@@ -1,14 +1,13 @@
 http:
   routers:
     wis2node_metrics:
-      rule: (PathPrefix(`/wis2node/metrics`) && ClientIP(`137.129.0.0/16`,`172.0.0.0/8`,`192.168.1.0/24`,`gaya`))
+      rule: (PathPrefix(`/wis2node/metrics`) && ClientIP(`192.168.0.0/16`))
       service: wis2node-srv
       entryPoints:
         - web
 
     wis2node_adm:
-      rule: (PathPrefix(`/wis2node/admin/`,`/wis2node/primary/`) && ClientIP(`137.129.0.0/16`,`172.0.0.0/8`,`192.168.1.0/24`,`gaya`))
-      service: wis2node-srv
+      rule: (PathPrefix(`/wis2node/admin/`,`/wis2node/primary/`) && ClientIP(`192.168.0.0/16`))
       middlewares: 
         - auth
       entryPoints:
@@ -23,7 +22,7 @@ http:
           interval: "10s"
           timeout: "3s"
         servers:
-                - url: "http://192.168.1.107/wis2node"
-                - url: "http://192.168.1.229/wis2node"
-                - url: "http://192.168.1.115/wis2node"
+                - url: "http://waloop01/wis2node"
+                - url: "http://waloop02/wis2node"
+                - url: "http://waloop03/wis2node"
 

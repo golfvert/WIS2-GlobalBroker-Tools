@@ -3,10 +3,10 @@
 127.0.0.1 wmanage.localdomain wmanage localhost
 127.0.0.1 container345575
 
-192.168.0.110 wbroker01 wbroker01.teganet.eu
-192.168.0.111 wbroker02 wbroker02.teganet.eu
-192.168.0.112 wbroker03 wbroker03.teganet.eu
-192.168.0.113 waloop01 waloop01.teganet.eu
-192.168.0.114 waloop02 waloop02.teganet.eu
-192.168.0.116 waloop03 waloop03.teganet.eu
-192.168.0.117 wmanage wmanage.teganet.eu
+192.168.0.1 wbroker01 wbroker01.mydomain.org
+192.168.0.2 wbroker02 wbroker02.mydomain.org
+192.168.0.3 wbroker03 wbroker03.mydomain.org
+192.168.0.4 waloop01 waloop01.mydomain.org
+192.168.0.5 waloop02 waloop02.mydomain.org
+192.168.0.6 waloop03 waloop03.mydomain.org
+192.168.0.7 wmanage wmanage.mydomain.org

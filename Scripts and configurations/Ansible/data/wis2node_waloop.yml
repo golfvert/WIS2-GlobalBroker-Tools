@@ -1,6 +1,6 @@
 http:
   middlewares:
     stripwis2node:
-       stripPrefix:
-          prefixes:
-            - "/wis2node"
+      stripPrefix:
+        prefixes:
+          - "/wis2node"
