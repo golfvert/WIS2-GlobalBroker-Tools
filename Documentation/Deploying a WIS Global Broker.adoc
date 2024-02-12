@@ -88,7 +88,7 @@ It is strongly suggested to configure _ssh_ access using preshared keys and not 
 
 === Security consideration
 
-image::https://github.com/golfvert/WIS2-GlobalBroker-Tools/blob/master/Documentation/images/GlobalBroker-Design.svg[]
+image::https://github.com/golfvert/WIS2-GlobalBroker-Tools/blob/master/Documentation/images/GlobalBroker-Design.jpg[]
 
 == Software components
 
