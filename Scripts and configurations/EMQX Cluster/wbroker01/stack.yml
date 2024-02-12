@@ -6,13 +6,10 @@ services:
       - wbroker01:192.168.0.1
       - wbroker02:192.168.0.2
       - wbroker03:192.168.0.3
-      - waloop01:192.168.0.4
-      - waloop02:192.168.0.5
-      - waloop03:192.168.0.6
     environment:
-    - "EMQX_NODE_NAME=emqx@wbroker03"
-    - "EMQX_CLUSTER__DISCOVERY_STRATEGY=static"
-    - "EMQX_CLUSTER__STATIC__SEEDS=[emqx@wbroker01,emqx@wbroker02]"
+      - "EMQX_NODE_NAME=emqx@wbroker01"
+      - "EMQX_CLUSTER__DISCOVERY_STRATEGY=static"
+      - "EMQX_CLUSTER__STATIC__SEEDS=[emqx@wbroker02,emqx@wbroker03]"
     healthcheck:
       test: ["CMD", "/opt/emqx/bin/emqx_ctl", "status"]
       interval: 5s

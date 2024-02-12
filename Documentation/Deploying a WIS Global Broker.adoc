@@ -89,6 +89,12 @@ It is strongly suggested to configure _ssh_ access using preshared keys and not 
 
 == Software components
 
+All configurations files described below are available on github.
+Being connected on wmanage VM with user `ansadm`, download https://github.com/golfvert/WIS2-GlobalBroker-Tools/archive/refs/heads/master.zip
+, unzip. The directory `Scripts and configuration` contains all files needed to deploy, successfully, a WIS2 compliant Global Broker.
+
+In the text below, some excerpts of the configuration are copied. For larger ones, the text will refer to the files extracted from the zip  downloaded from github.
+
 === Ansible 
 
 ==== General configuration
@@ -160,13 +166,27 @@ wbroker03 | CHANGED | rc=0 >>
 You can also check on `antiloop` and `manage`. 
 When everything is working as expected, it means that ansible is ready.
 
+=== Traefik
+
+==== Configuration
+
+On each wbroker0x, each waloop0x and wmanage host: 
+
+* Create a `traefik` directory in the home directory user chosen to run the docker containers and a `dynamic` directory inside the `traefik` directory.
+
+```
+mkdir traefik
+mkdir traefik/dynamic
+```
+
 === Redis
 
 ==== Configuration
 
 On each wbroker0x and each waloop0x host: 
 
-* Create a redis directory in the home directory of the docker user
+* Create a `redis` directory in the home directory user chosen to run the docker containers
+
 ```
 mkdir redis
 ```
@@ -242,31 +262,31 @@ It shows: `/data $`
 Then, enter:
 
 ```
-redis-cli --cluster create wbroker01:6379 wbroker02:6379 wbroker03:6379 waloop01:6379 waloop02:6379 waloop03:6379
+redis-cli --cluster create wbroker01:6379 wbroker02:6379 wbroker03:6379 waloop01:6379 waloop02:6379 waloop03:6379 --cluster-replicas 1
 ```
 
 The following is displayed:
 
 ```
 >>> Performing hash slots allocation on 6 nodes...
-Master[0] -> Slots 0 - 2730
-Master[1] -> Slots 2731 - 5460
-Master[2] -> Slots 5461 - 8191
-Master[3] -> Slots 8192 - 10922
-Master[4] -> Slots 10923 - 13652
-Master[5] -> Slots 13653 - 16383
-M: 580288c54b03da55288d96c326116a09eb4297e5 wbroker01:6379
-   slots:[0-2730] (2731 slots) master
-M: 0f28226023677a8cc2c517725224a127c58b8588 wbroker02:6379
-   slots:[2731-5460] (2730 slots) master
-M: b0bafd1023c46f9a4220b988a8de583481c2927c wbroker03:6379
-   slots:[5461-8191] (2731 slots) master
-M: 75b6c6d053bb59ee581fa2d63242761d6f1ddd38 waloop01:6379
-   slots:[8192-10922] (2731 slots) master
-M: 9510abcd3d18228e997cc49e1938b1c114155a9c waloop02:6379
-   slots:[10923-13652] (2730 slots) master
-M: 6c718043207b534b59642ab4be0d87e0af0ad669 waloop03:6379
-   slots:[13653-16383] (2731 slots) master
+Master[0] -> Slots 0 - 5460
+Master[1] -> Slots 5461 - 10922
+Master[2] -> Slots 10923 - 16383
+Adding replica waloop02:6379 to wbroker01:6379
+Adding replica waloop03:6379 to wbroker02:6379
+Adding replica waloop01:6379 to wbroker03:6379
+M: 9af0a9e2b1130e242483b01856cf9c0a90d2612a wbroker01:6379
+   slots:[0-5460] (5461 slots) master
+M: fcfefca097850bd642ce65712cf7ebdd5c8b7db9 wbroker02:6379
+   slots:[5461-10922] (5462 slots) master
+M: bfb1191976d6201fc189a65d77f967a38925410b wbroker03:6379
+   slots:[10923-16383] (5461 slots) master
+S: a0dcdc43b70b1da271a1f7cd96ed109877ee5c23 waloop01:6379
+   replicates bfb1191976d6201fc189a65d77f967a38925410b
+S: 71d7d73d08f4b09dac8c1323b87f4a2a83749c2b waloop02:6379
+   replicates 9af0a9e2b1130e242483b01856cf9c0a90d2612a
+S: 7cdd2eac79733acbda44153c284aa2286cf15eb2 waloop03:6379
+   replicates fcfefca097850bd642ce65712cf7ebdd5c8b7db9
 Can I set the above configuration? (type 'yes' to accept): 
 ```
 
@@ -277,26 +297,98 @@ Enter `yes`, the following is shown:
 >>> Assign a different config epoch to each node
 >>> Sending CLUSTER MEET messages to join the cluster
 Waiting for the cluster to join
-.
+..
 >>> Performing Cluster Check (using node wbroker01:6379)
-M: 580288c54b03da55288d96c326116a09eb4297e5 wbroker01:6379
-   slots:[0-2730] (2731 slots) master
-M: b0bafd1023c46f9a4220b988a8de583481c2927c 192.168.168.112:6379
-   slots:[5461-8191] (2731 slots) master
-M: 9510abcd3d18228e997cc49e1938b1c114155a9c 192.168.168.114:6379
-   slots:[10923-13652] (2730 slots) master
-M: 75b6c6d053bb59ee581fa2d63242761d6f1ddd38 192.168.168.113:6379
-   slots:[8192-10922] (2731 slots) master
-M: 6c718043207b534b59642ab4be0d87e0af0ad669 192.168.168.115:6379
-   slots:[13653-16383] (2731 slots) master
-M: 0f28226023677a8cc2c517725224a127c58b8588 192.168.168.111:6379
-   slots:[2731-5460] (2730 slots) master
+M: 9af0a9e2b1130e242483b01856cf9c0a90d2612a wbroker01:6379
+   slots:[0-5460] (5461 slots) master
+   1 additional replica(s)
+M: bfb1191976d6201fc189a65d77f967a38925410b 192.168.168.112:6379
+   slots:[10923-16383] (5461 slots) master
+   1 additional replica(s)
+S: a0dcdc43b70b1da271a1f7cd96ed109877ee5c23 192.168.168.113:6379
+   slots: (0 slots) slave
+   replicates bfb1191976d6201fc189a65d77f967a38925410b
+M: fcfefca097850bd642ce65712cf7ebdd5c8b7db9 192.168.168.111:6379
+   slots:[5461-10922] (5462 slots) master
+   1 additional replica(s)
+S: 7cdd2eac79733acbda44153c284aa2286cf15eb2 192.168.168.115:6379
+   slots: (0 slots) slave
+   replicates fcfefca097850bd642ce65712cf7ebdd5c8b7db9
+S: 71d7d73d08f4b09dac8c1323b87f4a2a83749c2b 192.168.168.114:6379
+   slots: (0 slots) slave
+   replicates 9af0a9e2b1130e242483b01856cf9c0a90d2612a
 [OK] All nodes agree about slots configuration.
 >>> Check for open slots...
 >>> Check slots coverage...
 [OK] All 16384 slots covered.
 ```
 
-The last line `[OK] All 16384 slots covered.` confirms that the cluster is successfully created.
+The last line `[OK] All 16384 slots covered.` confirms that the cluster is successfully created. +
+The three `M:` and the three `S:` indicate that there are three _Master_ and three _Slave_ providing the required redundancy. 
 
 This completes the installation of redis.
+
+=== EMQX
+
+==== Configuration
+
+On each wbroker0x host: 
+
+* Create a `emqx` directory in the home directory of user chosen to run the docker containers
+```
+mkdir emqx
+```
+
+==== Docker stack configuration
+
+Using portainer, connect sequentially on each wbroker0x:
+
+* Create a new stack called emqx with the following configuration:
+```
+services:
+  emqx:
+   image: emqx:5.5.0
+   container_name: emqx
+   extra_hosts:
+      - wbroker01:192.168.0.1
+      - wbroker02:192.168.0.2
+      - wbroker03:192.168.0.3
+   environment:
+      - "EMQX_NODE_NAME=emqx@wbroker01"
+      - "EMQX_CLUSTER__DISCOVERY_STRATEGY=static"
+      - "EMQX_CLUSTER__STATIC__SEEDS=[emqx@wbroker02,emqx@wbroker03]"
+   healthcheck:
+      test: ["CMD", "/opt/emqx/bin/emqx_ctl", "status"]
+      interval: 5s
+      timeout: 25s
+      retries: 5
+   network_mode: host
+   restart: always
+   volumes:
+      - /home/gb/emqx:/opt/emqx/data
+```
+** Modify `emqx:5.5.0` with the latest available docker image for emqx
+** Modify `/home/gb` to be the home directory of the user configured to run the docker containers
+** Modify all IP addresses of the wbroker0x hosts
+** Modify `EMQX_NODE_NAME` and `EMQX_CLUSTER_STATIC_SEEDS`. On host wbroker01 the NAME is wbroker01 and the CLUSTER are wbroker02 and wbroker03. The NAME is the hostname where the stack is started, the CLUSTER are the two other wbroker0x.
+
+When done, start the container.
+
+==== Verify the emqx cluster
+When all three emqx docker instances are started, on *one* of the wbroker0x, connect to the docker container, using portainer, open a `/bin/sh` shell on the redis container.
+
+It shows: `/data $`
+
+Then, enter:
+
+```
+emqx_ctl cluster status
+```
+
+If the following is displayed, then, the cluster is working as expected.
+
+```
+Cluster status: #{running_nodes =>
+      ['emqx@wbroker01','emqx@wbroker02','emqx@wbroker03'],
+      stopped_nodes => []}
+```
