@@ -56,7 +56,8 @@ Three VMs will host the Antiloop containers. For each WIS2 Node, two instances o
 The seventh VM is the management host. All setup will be done on this VMs and using Ansible the required configuration will be distributed to all wbroker0x and waloop0x VMs. As a convention, it will be called wmanage.
 
 
-The suggested configuration for each wbroker0x and waloop0x VM is as follow:
+The suggested configuration for each wbroker0x and waloop0x VM is:
+
 ```
 CPU: 8 cores
 RAM: 64 GBytes
@@ -86,6 +87,8 @@ After having installed the Linux Operating System, and before installing the add
 It is strongly suggested to configure _ssh_ access using preshared keys and not passwords.
 
 === Security consideration
+
+image::https://github.com/golfvert/WIS2-GlobalBroker-Tools/blob/master/Documentation/images/GlobalBroker-Design.svg[]
 
 == Software components
 
