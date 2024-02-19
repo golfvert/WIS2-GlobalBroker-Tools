@@ -1,6 +1,18 @@
 = Deploying a WIS2 Global Broker
+:toc: macro
 :sectnums: all
-:toc:
+:version: 0.1.4
+:author: Rémy Giraud
+:email: remy.giraud@meteo.fr
+:revnumber: 0.1
+:revdate: 18.02.2024 
+
+<<<
+
+toc::[]
+
+<<<
+
 
 Based on the experience of Météo-France Global Broker and using only freely available tools, the following describes an implementation of a WIS2 compliant Global Broker. See https://wmo-im.github.io/wis2-guide/guide/wis2-guide-DRAFT.html
 
@@ -15,7 +27,6 @@ A deployment management software tool. Running the same command on multiple host
 
 * Traefik +
 A very versatile tool used extensively in this configuration: 
-  ** terminating SSL connections
   ** managing the active/passive setup of the antiloop service
   ** managing multiple service sharing a single IP address
   ** ...

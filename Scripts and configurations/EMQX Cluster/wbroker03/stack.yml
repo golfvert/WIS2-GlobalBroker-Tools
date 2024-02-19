@@ -2,14 +2,11 @@ services:
   emqx:
     image: emqx:5.5.0
     container_name: emqx
-    extra_hosts:
-      - wbroker01:192.168.0.1
-      - wbroker02:192.168.0.2
-      - wbroker03:192.168.0.3
     environment:
-      - "EMQX_NODE_NAME=emqx@wbroker03"
+      - "EMQX_NODE_NAME=emqx@wbroker03.domain.org"
       - "EMQX_CLUSTER__DISCOVERY_STRATEGY=static"
-      - "EMQX_CLUSTER__STATIC__SEEDS=[emqx@wbroker01,emqx@wbroker02]"
+      - "EMQX_CLUSTER__STATIC__SEEDS=[emqx@wbroker01.domain.org,emqx@wbroker02.domain.org]"
+      - "EMQX_NODE__COOKIE=chooseacomplexpassword"
     healthcheck:
       test: ["CMD", "/opt/emqx/bin/emqx_ctl", "status"]
       interval: 5s

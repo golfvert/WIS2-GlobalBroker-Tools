@@ -11,10 +11,10 @@ services:
       labels:
         - traefik.enable=true
         - traefik.http.routers.wis2node.entrypoints=web
-        - traefik.http.routers.wis2node.rule=PathPrefix(`/groland/`)
+        - traefik.http.routers.wis2node.rule=PathPrefix(`/wis2node/`)
         - traefik.http.services.wis2node.loadbalancer.server.port=1880
         - traefik.http.services.wis2node.loadbalancer.server.scheme=http
-        - traefik.http.routers.wis2node.middlewares=stripgroland@file
+        - traefik.http.routers.wis2node.middlewares=stripwis2node@file
       networks:
         - traefik
       restart: unless-stopped
