@@ -190,6 +190,19 @@ To check that everything is configured properly, it must be possible:
 
 * when connected as ansadm on any of wbroker0x, waloop0x and wmanage, `sudo su -` must give `root` access without the need of entering a password.
 
+In order to use the provided playbooks, additional python modules might ne needed on all waloop0x hosts. Typically on Debian this could be done with
+```
+apt install python3-docker
+```
+for installing docker related python wrap-up.
+
+The installation method is deeply linked to the packaging of the distribution. In some case, it also can be done after having installed `pip` followed by installing docker related tools with:
+
+```
+pip3 install docker
+```
+Refer to the documentation on python for the linux distribution used.
+
 ==== Inventory file
 
 In ansible, _Managed nodes_ can be grouped to facilitate the execution of the same command on a particular group of nodes.

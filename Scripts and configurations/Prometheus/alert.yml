@@ -1,0 +1,10 @@
+groups:
+- name: "Disconnected WIS2 Nodes"
+  rules:
+  - alert: disconnectedwis2node
+    expr: wmo_wis2_gb_connected_flag == 0
+    for: 10m
+    labels:
+      severity: warning
+    annotations:
+      summary: Disconnected WIS2 Node
