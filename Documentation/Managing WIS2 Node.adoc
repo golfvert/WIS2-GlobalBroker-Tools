@@ -14,7 +14,7 @@ toc::[]
 <<<
 
 
-Based on the experience of Météo-France Global Broker and using only freely available tools, the following describes an implementation of a WIS2 compliant Global Broker. See https://wmo-im.github.io/wis2-guide/guide/wis2-guide-DRAFT.html
+Test
 
 == The software components
 === The must
