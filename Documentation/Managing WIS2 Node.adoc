@@ -1,0 +1,20 @@
+= Managing WIS2 Node
+:toc: macro
+:sectnums: all
+:version: 0.1
+:author: David Podeur
+:email: david.podeur@meteo.fr
+:revnumber: 0.1
+:revdate: 27.02.2024 
+
+<<<
+
+toc::[]
+
+<<<
+
+
+Based on the experience of Météo-France Global Broker and using only freely available tools, the following describes an implementation of a WIS2 compliant Global Broker. See https://wmo-im.github.io/wis2-guide/guide/wis2-guide-DRAFT.html
+
+== The software components
+=== The must
