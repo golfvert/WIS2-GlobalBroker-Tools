@@ -18,11 +18,10 @@ The documentation _Managing WIS2 Node_ details how to manage subscriptions to WI
 == Software components
 
 Each WIS2 Node is harversted by at least 2 dedicated docker containers on the WIS2 Global Broker:
-- all containers received messages from the source WIS2 Node 
-- only the "primary" container will check for duplicate messages (antiloop) and feed the WIS2 Global Broker
-- the "secondary" containers will monitor the "primary" container and will take over in case of "primary" outage
 
-
+* all containers receive messages from the source WIS2 Node 
+* only the "primary" container will check for duplicate messages (antiloop) and feed the WIS2 Global Broker
+* the "secondary" container(s) will monitor the "primary" container and will take over in case of "primary" outage
 
 == WIS2 Node subscription configuration
 
