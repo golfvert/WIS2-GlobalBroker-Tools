@@ -238,11 +238,125 @@ waloop02                   : ok=2    changed=0    unreachable=0    failed=0    s
 waloop03                   : ok=2    changed=0    unreachable=0    failed=0    skipped=2    rescued=0    ignored=0
 ```
 
-
-
 == Upgrade a WIS2 Node
-
 
 Using *update-wis2node.yml*
 
+IMPORTANT: You need to run *./add_wis2node.sh* everytime you modify your **.env* files.
+
+*update-wis2node.yml* will process each waloop0x, one after the other and:
+- if needed, update only the waloop0x nodes running the container
+- restart the containers after update
+- wait
+
+
+```
+ansadm@wmanage:~$ vim data/env/zm-zmd.env
+ansadm@wmanage:~$ ./add_wis2node.sh zm-zmd
+ansadm@wmanage:~$ ansible-playbook update-wis2node.yml  -e "wis2node=zm-zmd"
+
+PLAY [antiloop] ********************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************
+ok: [waloop01]
+
+TASK [Get infos on container] ******************************************************************************
+ok: [waloop01]
+
+TASK [Does container exist?] *******************************************************************************
+changed: [waloop01]
+
+TASK [Purge if exists] *************************************************************************************
+changed: [waloop01]
+
+TASK [Create directory] ************************************************************************************
+changed: [waloop01]
+
+TASK [Copy host env file] **********************************************************************************
+changed: [waloop01]
+
+TASK [Copy required files] *********************************************************************************
+changed: [waloop01]
+
+TASK [Deploy new container] ********************************************************************************
+changed: [waloop01]
+
+TASK [pause for 1 minute (so that new container runs)] *****************************************************
+Pausing for 60 seconds
+(ctrl+C then 'C' = continue early, ctrl+C then 'A' = abort)
+Press 'C' to continue the play or 'A' to abort
+ok: [waloop01]
+
+PLAY [antiloop] ********************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************
+ok: [waloop02]
+
+TASK [Get infos on container] ******************************************************************************
+ok: [waloop02]
+
+TASK [Does container exist?] *******************************************************************************
+changed: [waloop02]
+
+TASK [Purge if exists] *************************************************************************************
+changed: [waloop02]
+
+TASK [Create directory] ************************************************************************************
+changed: [waloop02]
+
+TASK [Copy host env file] **********************************************************************************
+changed: [waloop02]
+
+TASK [Copy required files] *********************************************************************************
+changed: [waloop02]
+
+TASK [Deploy new container] ********************************************************************************
+changed: [waloop02]
+
+TASK [pause for 1 minute (so that new container runs)] *****************************************************
+Pausing for 60 seconds
+(ctrl+C then 'C' = continue early, ctrl+C then 'A' = abort)
+Press 'C' to continue the play or 'A' to abort
+ok: [waloop02]
+
+PLAY [antiloop] ********************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************
+ok: [waloop03]
+
+TASK [Get infos on container] ******************************************************************************
+ok: [waloop03]
+
+TASK [Does container exist?] *******************************************************************************
+skipping: [waloop03]
+
+TASK [Purge if exists] *************************************************************************************
+skipping: [waloop03]
+
+TASK [Create directory] ************************************************************************************
+skipping: [waloop03]
+
+TASK [Copy host env file] **********************************************************************************
+skipping: [waloop03]
+
+TASK [Copy required files] *********************************************************************************
+skipping: [waloop03]
+
+TASK [Deploy new container] ********************************************************************************
+skipping: [waloop03]
+
+TASK [pause for 1 minute (so that new container runs)] *****************************************************
+Pausing for 60 seconds
+(ctrl+C then 'C' = continue early, ctrl+C then 'A' = abort)
+Press 'C' to continue the play or 'A' to abort
+ok: [waloop03]
+
+PLAY RECAP *************************************************************************************************
+waloop01                   : ok=9    changed=6    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+waloop02                   : ok=9    changed=6    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+waloop03                   : ok=3    changed=0    unreachable=0    failed=0    skipped=6    rescued=0    ignored=0
+```
+
+
 Be careful when upgrading from container 1.x to 2.x.
+
