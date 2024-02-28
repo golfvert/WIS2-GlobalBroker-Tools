@@ -17,7 +17,7 @@ The documentation _Managing WIS2 Node_ details how to manage subscriptions to WI
 
 == Software components
 
- On a WIS2 Global Broker, and for each WIS2 Node, one docker container is created on two of the three waloop0x hosts for redundancy purposes:
+On a WIS2 Global Broker, and for each WIS2 Node, one docker container is created on two of the three waloop0x hosts for redundancy purposes:
 
 * both containers subscribe and receive messages from the remote WIS2 Node 
 * only the "primary" container will process the messages and publish the relevant messages to the WIS2 Global Broker
