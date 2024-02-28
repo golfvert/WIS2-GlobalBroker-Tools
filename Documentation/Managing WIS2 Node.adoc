@@ -366,7 +366,7 @@ golfvert/wis2gb:2.0.5
 
 IMPORTANT: This file will need to be updated whenever newer versions of the image are released (and successfully tested).
 
-As WIS Nodes subscriptions are added one by one, it is likely that different container versions will be used. For example, at the time of writing (Feb 24), version 2.0.4 and 2.0.5 are in use.
+As WIS2 Nodes subscriptions are added one by one, it is likely that different container versions will be used. For example, at the time of writing (Feb 24), version 2.0.4 and 2.0.5 are in use.
 
 In order to idenfity all version used, you can use *get-container-tag.sh*:
 
@@ -391,7 +391,7 @@ ansadm@wmanage:~$ ./get-container-tag.sh   golfvert/wis2gb:2.0.4
 ./wis2node/fr-meteofrance/compose/docker-compose.yml:      image: golfvert/wis2gb:2.0.4
 ```
 
-In otder to upgrade (or downgrade) to the image version specified under `/home/ansadm/data/wis2node-container-tag.txt`, the `upgrade-container-tag.sh tag` will generate the shell commands needed to perform the upgrade on all containers running the _tag_ version of the container. For example, to list all WIS2 Nodes running `golfvert/wis2gb:2.0.4` version:
+In order to upgrade (or downgrade) to the image version specified under `/home/ansadm/data/wis2node-container-tag.txt`, the `upgrade-container-tag.sh tag` will generate the shell commands needed to perform the upgrade on all containers running the _tag_ version of the container. For example, to list all WIS2 Nodes running `golfvert/wis2gb:2.0.4` version:
 
 ```
 ansadm@wmanage:~$ ./upgrade-container-tag.sh golfvert/wis2gb:2.0.4
