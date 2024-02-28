@@ -13,21 +13,21 @@ toc::[]
 
 <<<
 
-The documentation _Managing WIS2 Node_ details how to manage subscriptions to WIS2 Nodes on a WIS2 Global Broker.
+The documentation _Managing WIS2 Node_ details how to manage subscriptions to WIS2 Nodes on a WIS2 Global Broker using the solution presented in _Deploying a WIS2 Global Broker_. It is based on using a docker image available on docker hub `golfvert/wis2gb`. This docker image implement the required features of the Global Broker setup, typically, the _antiloop_ feature, updating metrics,...
 
 == Software components
 
-On a WIS2 Global Broker, each WIS2 Node is harversted by at least 2 dedicated docker containers:
+ On a WIS2 Global Broker, and for each WIS2 Node, one docker container is created on two of the three waloop0x hosts for redundancy purposes:
 
-* all containers receive messages from the source WIS2 Node 
-* only the "primary" container will check for duplicate messages (antiloop) and feed the WIS2 Global Broker
-* the "secondary" container(s) will monitor the "primary" container and will take over in case of "primary" outage
+* both containers subscribe and receive messages from the remote WIS2 Node 
+* only the "primary" container will process the messages and publish the relevant messages to the WIS2 Global Broker
+* the "secondary" container will monitor the "primary" container and will take over in case of "primary" outage
 
 == WIS2 Node subscription configuration
 
-This step is used to create the primary and secondary containers configuration.
+This step is used to create the container configuration.
 
-A configuration file is needed for the each source WIS2 Node:
+A configuration file is needed for the each WIS2 Node:
 
 Example:
 ```
@@ -55,35 +55,30 @@ GDC_URL=https://api.weather.gc.ca/collections/wis2-discovery-metadata/items?lang
 | MQTT_SUB_PASSWORD=
 |
 | MQTT_SUB_TOPIC=Topic_to_sub
-| e.g. origin/a/wis2/fra/#. 
+| e.g. origin/a/wis2/fr-meteofrance/# It is suggested to subscribe to `origin/a/wis2/_centre-id_/#` so that all notifications messages from that particular centre-id can be received. It must be noted that subscription to Global Caches should be `cache/a/wis2/#` and to Global Brokers `origin/a/wis2/#,cache/a/wis2/#`
 | MQTT_SUB_VERIFYCERT= true
-| if using SSL should the certificate by checked (prevent slef-signed certificates to work. Or not)
-| MQTT_PUB_BROKER=GlobalBroker_URL
-| Global Broker URL such as mqtts://globalbroker.site.com:8883 or wss://globalbroker.site.com:443
-| MQTT_PUB_USERNAME=
-|
-| MQTT_PUB_PASSWORD=
-|
-| MQTT_MONIT_TOPIC=
-| Topic_to_publish_on_Global_Broker
+| if using SSL should the certificate by checked (prevent self-signed certificates to work. Or not)
 | MSG_CHECK_OPTION=verify
-| Should messages be "verify" (just add _comment in the notification message), "discard" (bin the message if not correct), "ignore" (don't check the messages)
+| Should messages be `verify` (just add _comment in the notification message if the message is malformed), `discard` (discard the message if not correct), `ignore` (don't check the messages). At time of writing (Feb.24) it is strongly suggested to use `ignore`
 | TOPIC_CHECK_OPTION=verify
-| Should topic of publication be verified against the metadata published by centreid. The list is obtained by querying the Global Discovery Catalog.
+| Should topic of publication be verified against the metadata published by centre-id. The list is obtained by querying the Global Discovery Catalog.
 Query is made every 15 minutes.
 | GDC_URL= 
 | How to query the GDC ? centre-id is added at the end of the URL.
 | CENTRE_ID=
-| Name_of_Center used as label and as a key when 2 (or more) containers are running 
-| REDIS_URL=[{"host":@IP1,"port":port1},{"host":@IP2,"port":port2},......] 
-| A JSON Array with all host:port instances of the redis cluster
+| Name_of_Center used as label
 |===
 
-Source doc: https://github.com/golfvert/WIS2-GlobalBroker-Redundancy
+See https://github.com/golfvert/WIS2-GlobalBroker-Redundancy 
+
+The above github repository hosts the source code used by the `golfvert/wis2db` container image.
+
+Adding a new WIS2 Node on the Global Broker, starts by creating a file call *centre-id.env* in `/home/ansadm/data/env/`. The *centre-id* is the name that the WIS Centre and WMO Secretariat have decided to use for running a WIS2 Node in that Centre.
+This name is unique and will be used as an identifier throughout WIS2. 
 
 == Add WIS2 Node subscription
 
-The config file needs to be parsed in order to create all needed docker resources in order to be able to start WIS2 Node containers on the waloop0x nodes.
+The configuration file  need to be parsed in order to create all resources to deploy and start an instance of the `golfvert/wis2db` container on the waloop0x nodes. By default, one container will be deployed on two waloopx hosts.
 
 Login as ansadm:
 ```
@@ -91,11 +86,13 @@ ansadm@wmanage:~$ pwd
 /home/ansadm
 ```
 
-Create config files for the container:
+After having created the file `/home/ansadm/data/env/centre-id.env` this file is parsed to create the entire configuration for this additional WIS2 Node subscription: 
+
+Create all configuration files for the WIS2 Node *zm-zmd*:
 ```
 ansadm@wmanage:~$ ./add_wis2node.sh zm-zmd
 ```
-*add_wis2node.sh* has no output, but it will generate files needed to create the containers.
+*add_wis2node.sh* has no output, but it will generate files needed to create the full configuration, including docker setup and files required for the management of the WIS2 Node subscription.
 
 Here is an example of a content generated by *add_wis2node.sh*:
 
@@ -111,8 +108,8 @@ Here is an example of a content generated by *add_wis2node.sh*:
 
 
 It is then possible to deploy the WIS2 Node containers with *deploy-wis2node.yml* which will:
- 
-* randomnly find 2 suitable wloop0x nodes to run the containers (one for primary, the other for secondary)
+
+* randomly select two wloop0x VMs to run the containers (one for primary, the other for secondary)
 * perform cleanup to make sure old containers for the same WIS2 Node do not run on the other nodes
 
 Execution example:
@@ -188,9 +185,6 @@ waloop03                   : ok=9    changed=6    unreachable=0    failed=0    s
 
 ansadm@wmanage:~$
 ```
-
-
-
 
 == Delete a WIS2 Node
 
