@@ -404,7 +404,7 @@ ansible-playbook update-wis2node.yml -e wis2node=fr-meteofrance
 ```
 
 This will _only_ upgrade the container version considering that the entire configuration for the WIS2 Node remains the same.
-In some cases, it might be needed to modify the content of *centre-id.env* file. In this case, this script shouldn't be used. Using _Upgrade WIS2 Node_ procedure must be used in the case, after having manually changes the *centre-id.env* file.
+In some cases, it might be needed to modify the content of *centre-id.env* file. In this case, this script shouldn't be used. Using _Upgrade WIS2 Node_ procedure must be applied in the case, after having manually changed the *centre-id.env* file(s).
 
 The ouptput of `./upgrade-container-tag.sh golfvert/wis2gb:2.0.4` can then be used and pasting those commands manually to a terminal will perform the upgrade:
 
