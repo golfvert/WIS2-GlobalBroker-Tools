@@ -391,7 +391,7 @@ ansadm@wmanage:~$ ./get-container-tag.sh   golfvert/wis2gb:2.0.4
 ./wis2node/fr-meteofrance/compose/docker-compose.yml:      image: golfvert/wis2gb:2.0.4
 ```
 
-In oder to upgrade (or downgrade) to the image version specified under `/home/ansadm/data/wis2node-container-tag.txt`, the *upgrade-container-tag.s* will generate the shell commands needed to perform the upgrade:
+In otder to upgrade (or downgrade) to the image version specified under `/home/ansadm/data/wis2node-container-tag.txt`, the `upgrade-container-tag.sh tag` will generate the shell commands needed to perform the upgrade on all containers running the _tag_ version of the container. For example, to list all WIS2 Nodes running `golfvert/wis2gb:2.0.4` version:
 
 ```
 ansadm@wmanage:~$ ./upgrade-container-tag.sh golfvert/wis2gb:2.0.4
@@ -403,7 +403,10 @@ ansible-playbook update-wis2node.yml -e wis2node=de-dwd-gts-to-wis2
 ansible-playbook update-wis2node.yml -e wis2node=fr-meteofrance
 ```
 
-You may then paste those commands manually to a terminal to perform the upgrade:
+This will _only_ upgrade the container version considering that the entire configuration for the WIS2 Node remains the same.
+In some cases, it might be needed to modify the content of *centre-id.env* file. In this case, this script shouldn't be used. Using _Upgrade WIS2 Node_ procedure must be used in the case, after having manually changes the *centre-id.env* file.
+
+The ouptput of `./upgrade-container-tag.sh golfvert/wis2gb:2.0.4` can then be used and pasting those commands manually to a terminal will perform the upgrade:
 
 ```
 ansible-playbook update-wis2node.yml -e wis2node=fr-meteofrance
