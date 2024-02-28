@@ -1,4 +1,4 @@
-= Managing WIS2 Node
+= Managing WIS2 Node subscriptions
 :toc: macro
 :sectnums: all
 :version: 0.2
@@ -185,9 +185,9 @@ waloop03                   : ok=9    changed=6    unreachable=0    failed=0    s
 ansadm@wmanage:~$
 ```
 
-== Delete a WIS2 Node
+== Delete a WIS2 Node subscription
 
-In order to remove the containers from the waloop0x nodes:
+In order to remove the containers corresponding to one WIS2 Node subscription from the waloop0x nodes:
 
 ```
 ansadm@wmanage:~$ ansible-playbook delete-wis2node.yml -e "wis2node=zm-zmd"
@@ -364,7 +364,9 @@ ansadm@wmanage:~$ cat /home/ansadm/data/wis2node-container-tag.txt
 golfvert/wis2gb:2.0.5
 ```
 
-As WIS Nodes subscriptions are added one by one, it is likely that different container versions will be used.
+IMPORTANT: This file will need to be updated whenever newer versions of the image are released (and successfully tested).
+
+As WIS Nodes subscriptions are added one by one, it is likely that different container versions will be used. For example, at the time of writing (Feb 24), version 2.0.4 and 2.0.5 are in use.
 
 In order to idenfity all version used, you can use *get-container-tag.sh*:
 
@@ -401,7 +403,7 @@ ansible-playbook update-wis2node.yml -e wis2node=de-dwd-gts-to-wis2
 ansible-playbook update-wis2node.yml -e wis2node=fr-meteofrance
 ```
 
-You can then paste those commands manually to a terminal:
+You may then paste those commands manually to a terminal to perform the upgrade:
 
 ```
 ansible-playbook update-wis2node.yml -e wis2node=fr-meteofrance
