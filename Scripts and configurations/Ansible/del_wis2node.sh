@@ -16,10 +16,10 @@ fi
 if [ -f json/$WIS2NODE.json ]; then
   rm json/`echo $WIS2NODE`.json
   if [ "$(ls -A json)" ]; then
-      jq -n 'reduce inputs as $in (null;
+     jq -n 'reduce inputs as $in (null;
         . + if $in|type == "array" then $in else [$in] end)
         ' $(find ./json -name '*.json') > mqtt.json
   else
-      cat /dev/null > mqtt.json
+     cat /dev/null > mqtt.json
   fi
 fi
