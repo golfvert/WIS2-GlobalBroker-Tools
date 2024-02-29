@@ -36,8 +36,8 @@ MQTT_SUB_BROKER=mqtts://hpfx.collab.science.gc.ca
 MQTT_SUB_USERNAME=******
 MQTT_SUB_PASSWORD=******
 MQTT_SUB_TOPIC=origin/a/wis2/ca-eccc-msc/#
-MQTT_SUB_VERIFYCERT=false
 CENTRE_ID=ca-eccc-msc
+MQTT_SUB_VERIFYCERT=false
 MQTT_MONIT_TOPIC=monitor
 MSG_CHECK_OPTION=verify
 TOPIC_CHECK_OPTION=verify
@@ -66,7 +66,7 @@ Query is made every 15 minutes.
 | GDC_URL= 
 | How to query the GDC ? centre-id is added at the end of the URL.
 | CENTRE_ID=
-| Name_of_Center used as label
+| Name_of_Center used as an identifier throughout WIS2
 |===
 
 See https://github.com/golfvert/WIS2-GlobalBroker-Redundancy 

@@ -19,8 +19,6 @@
     register: dir_to_delete
 
   - name: Remove old container
-    vars:
-      ansible_python_interpreter: /opt/anaconda3/bin/python
     community.docker.docker_compose:
       project_src: /home/gb/compose/{{ wis2node }}
       state: absent
@@ -44,7 +42,7 @@
       owner: gb
       group: docker
       mode: '0644'
-      backup: yes
+      backup: no
 
   - name: Create directory
     file:
@@ -73,8 +71,6 @@
       backup: no
 
   - name: Deploy new container
-    vars:
-      ansible_python_interpreter: /opt/anaconda3/bin/python
     community.docker.docker_compose:
       project_src: /home/gb/compose/{{ wis2node }}
       state: present
@@ -90,7 +86,7 @@
       owner: gb
       group: docker
       mode: '0644'
-      backup: yes
+      backup: no
 
   - name: Update traefik config
     ansible.builtin.copy:

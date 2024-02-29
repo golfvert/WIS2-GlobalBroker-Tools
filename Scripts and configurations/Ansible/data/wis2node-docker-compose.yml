@@ -1,8 +1,8 @@
-version: '3.8'
+version: '3'
 services:
     wis2node:
       container_name: wis2node
-      image: golfvert/wis2gb:2.0.3
+      image: container-tag
       env_file:
         - wis2node.env
         - redis.env

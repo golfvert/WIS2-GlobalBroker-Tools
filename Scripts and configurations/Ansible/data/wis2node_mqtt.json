@@ -1,0 +1,10 @@
+  {
+     "labels": {
+     "report_by": "org-domain-global-broker",
+     "job": "wis2node",
+     "__metrics_path__": "/wis2node/metrics"
+      },
+     "targets": [
+        "traefik:80"
+      ]
+  }
