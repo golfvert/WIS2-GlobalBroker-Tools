@@ -1,0 +1,1 @@
+The repository includes the documentation, scripts and configuration files to implement a WIS2 Global Broker using the docker container golfvert/wis2db for the antiloop feature (see https://github.com/golfvert/WIS2-GlobalBroker-Redundancy)
