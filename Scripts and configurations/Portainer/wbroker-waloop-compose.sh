@@ -1,1 +1,1 @@
-docker run  -p 9001:9001 --name portainer_agent --restart=always -v /var/run/docker.sock:/var/run/docker.sock -d -e AGENT_SECRET=w4JEnPX3P7w6xCDd9ZA63Z9p2 -v /var/lib/docker/volumes:/var/lib/docker/volumes portainer/agent:2.19.4-alpine
+docker run  -p 9001:9001 --name portainer_agent --restart=always -v /var/run/docker.sock:/var/run/docker.sock -d -e AGENT_SECRET=some_shared_secret -v /var/lib/docker/volumes:/var/lib/docker/volumes portainer/agent:2.19.4-alpine
